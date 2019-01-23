@@ -8,8 +8,9 @@ using System.Web.Mvc;
 
 namespace Ohjelmoinnin_jatko.Controllers
 {
-    public class TaulukotController : Controller
+    public class Taulukko2Controller : Controller
     {
+        // GET: Taulukko2
         public ActionResult Projektit()
         {
             return View();
@@ -92,8 +93,8 @@ namespace Ohjelmoinnin_jatko.Controllers
             {
                 // muokkaus, haetaan id:n perusteella riviä tietokannasta
                 Projektit dbItem = (from c in entities.Projektit
-                                   where c.ProjektiID == id
-                                   select c).FirstOrDefault();
+                                    where c.ProjektiID == id
+                                    select c).FirstOrDefault();
                 if (dbItem != null)
                 {
                     dbItem.ProjektiNimi = proj.ProjektiNimi;
@@ -119,8 +120,8 @@ namespace Ohjelmoinnin_jatko.Controllers
             //etsitään id:n perusteella asiakasrivi kannasta
             bool OK = false;
             Projektit dbItem = (from c in entities.Projektit
-                               where c.ProjektiID == id
-                               select c).FirstOrDefault();
+                                where c.ProjektiID == id
+                                select c).FirstOrDefault();
             if (dbItem != null)
             {
                 // tietokannasta poisto

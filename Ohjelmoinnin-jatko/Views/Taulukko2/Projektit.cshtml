@@ -6,7 +6,7 @@
 	<script type="text/javascript">
 
 		function päivitäAsiakaslistaus() {
-			$.getJSON("/taulukot/getlist", null, function (json) {
+			$.getJSON("/taulukko2/getlist", null, function (json) {
 				var projekti = JSON.parse(json);
 				//alert("Asiakkaiden lkm: " + projekti.lenght);
 
@@ -33,7 +33,7 @@
 					//alert(ProjektiID);
 
 					//haetaan asiakkaan tiedot id:n perusteella
-					$.getJSON("/taulukot/getsingleprojekti/" + ProjektiID, null, function (json2) {
+					$.getJSON("/taulukko2/getsingleprojekti/" + ProjektiID, null, function (json2) {
 						var projekti = JSON.parse(json2);
 
 						// kopiodaan tiedot ikkunaan
@@ -57,7 +57,7 @@
 					var ok = confirm("Haluatko varmasti poistaa projektin " + ProjektiID + "?");
 
 					if (ok == true) {
-						$.getJSON("/taulukot/delete/" + ProjektiID, null, function (status) {
+						$.getJSON("/taulukko2/delete/" + ProjektiID, null, function (status) {
 							if (status == true) {
 								alert("Projekti on nyt poistettu!");
 								päivitäAsiakaslistaus();
@@ -100,7 +100,7 @@
 					Status: $("#customerModal_Status").val()
 				};
 
-				$.post("/taulukot/update/", details, function (status) {
+				$.post("/taulukko2/update/", details, function (status) {
 					if (status == true) {
 						alert("Projektin tiedot tallennettu!");
 						$("#customerModalDialog").modal("hide");
