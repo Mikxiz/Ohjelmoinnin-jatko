@@ -1,0 +1,175 @@
+﻿@{
+	ViewBag.Title = "Tunnit";
+}
+@section scripts {
+
+	<script type="text/javascript">
+
+		function päivitäAsiakaslistaus() {
+			$.getJSON("/taulukko3/getlist", null, function (json) {
+				var projekti = JSON.parse(json);
+				//alert("Asiakkaiden lkm: " + projekti.lenght);
+
+				var html = "";
+				for (var index = 0; index < projekti.length; index++) {
+					html += "<tr>" +
+						"<td><a href='#'><span class='glyphicon glyphicon-pencil'></span></a></td>" +
+						"<td>" + projekti[index].ProjektiID + "</td>" +
+						"<td>" + projekti[index].ProjektiNimi + "</td>" +
+						"<td>" + projekti[index].Esimies + "</td>" +
+						"<td>" + projekti[index].Avattu + "</td>" +
+						"<td>" + projekti[index].Suljettu + "</td>" +
+						"<td>" + projekti[index].Status + "</td>" +
+						"<td><a href='#'><span class='glyphicon glyphicon-trash'></span></a></td>" +
+						"</tr>\r\n";
+				}
+
+				$("#customerList tbody").html(html);
+
+				//tietojen muokkaus
+				$(".glyphicon-pencil").click(function () {
+					// etsitään asiakkaan tiedot klikatulta riviltä
+					var ProjektiID = $(this).parent().parent().next().text();
+					//alert(ProjektiID);
+
+					//haetaan asiakkaan tiedot id:n perusteella
+					$.getJSON("/taulukko3/getsingleprojekti/" + ProjektiID, null, function (json2) {
+						var projekti = JSON.parse(json2);
+
+						// kopiodaan tiedot ikkunaan
+						$("#customerModal_ProjektiID").val(projekti.ProjektiID);
+						$("#customerModal_ProjektiNimi").val(projekti.ProjektiNimi);
+						$("#customerModal_Esimies").val(projekti.Esimies);
+						$("#customerModal_Avattu").val(projekti.Avattu);
+						$("#customerModal_Suljettu").val(projekti.Suljettu);
+						$("#customerModal_Status").val(projekti.Status);
+
+						// näytetään ikkuna
+						$("#customerModalTitle").text("Muokkaa projektia");
+						$("#customerModalDialog").modal("show");
+					});
+				});
+
+				// tietojen poisto
+				$(".glyphicon-trash").click(function () {
+					// etsitään asiakkaan tiedot klikatulta riviltä
+					var ProjektiID = $(this).parent().parent().prev().prev().prev().prev().prev().prev().text();
+					var ok = confirm("Haluatko varmasti poistaa projektin " + ProjektiID + "?");
+
+					if (ok == true) {
+						$.getJSON("/taulukko3/delete/" + ProjektiID, null, function (status) {
+							if (status == true) {
+								alert("Projekti on nyt poistettu!");
+								päivitäAsiakaslistaus();
+							}
+							else {
+								alert("Poistaminen ei onnistunut, yritä uudelleen!");
+							}
+						});
+					}
+				});
+			});
+		}
+
+		// sivun alustaminen
+		$(function () {
+			päivitäAsiakaslistaus();
+
+			$("#addNewCustomerButton").click(function () {
+
+				// tyhjennetään ikkunan tiedot
+				$("#customerModal_ProjektiID").val(0);
+				$("#customerModal_ProjektiNimi").val("");
+				$("#customerModal_Esimies").val("");
+				$("#customerModal_Avattu").val("");
+				$("#customerModal_Suljettu").val("");
+				$("#customerModal_Status").val("");
+
+				$("#customerModalTitle").text("Lisää uusi projekti");
+				$("#customerModalDialog").modal("show");
+			});
+
+			$("#customerModalSaveButton").click(function () {
+				// luetaan käyttäjän syöttämät kentät
+				var details = {
+					ProjektiID: $("#customerModal_ProjektiID").val(),
+					ProjektiNimi: $("#customerModal_ProjektiNimi").val(),
+					Esimies: $("#customerModal_Esimies").val(),
+					Avattu: $("#customerModal_Avattu").val(),
+					Suljettu: $("#customerModal_Suljettu").val(),
+					Status: $("#customerModal_Status").val()
+				};
+
+				$.post("/taulukko3/update/", details, function (status) {
+					if (status == true) {
+						alert("Projektin tiedot tallennettu!");
+						$("#customerModalDialog").modal("hide");
+						päivitäAsiakaslistaus();
+					}
+					else {
+						alert("Tallennus ei onnistunut, yritä uudelleen!");
+					}
+				});
+			});
+		});
+	</script>
+
+}
+<h1>Projektit sivu</h1>
+<button class="btn btn-primary" id="addNewCustomerButton">Lisää uusi projekti</button>
+
+<table class="table table-striped" id="customerList">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Projekti-id</th>
+			<th>ProjektiNimi</th>
+			<th>Esimies</th>
+			<th>Avattu</th>
+			<th>Suljettu</th>
+			<th>Status</th>
+		</tr>
+	</thead>
+	<tbody></tbody>
+</table>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="customerModalDialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"><span id="customerModalTitle">Muokkaa projektia</span></h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-3">Projekti-id</div>
+					<div class="col-md-6"><input class="form-control" id="customerModal_ProjektiID" type="text" readonly></div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">ProjektiNimi</div>
+					<div class="col-md-6"><input class="form-control" id="customerModal_ProjektiNimi" type="text"></div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">Esimies</div>
+					<div class="col-md-6"><input class="form-control" id="customerModal_Esimies" type="text"></div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">Avattu</div>
+					<div class="col-md-6"><input class="form-control" id="customerModal_Avattu" type="text"></div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">Suljettu</div>
+					<div class="col-md-6"><input class="form-control" id="customerModal_Suljettu" type="text"></div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">Status</div>
+					<div class="col-md-6"><input class="form-control" id="customerModal_Status" type="text"></div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Sulje</button>
+				<button type="button" class="btn btn-primary" id="customerModalSaveButton">Tallenna</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

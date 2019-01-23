@@ -8,29 +8,29 @@ using System.Web.Mvc;
 
 namespace Ohjelmoinnin_jatko.Controllers
 {
-    public class TaulukkoController : Controller
+    public class Taulukko3Controller : Controller
     {
-        // GET: Taulukko
-        public ActionResult Henkilöt()
+        // GET: Taulukko2
+        public ActionResult Tunnit()
         {
             return View();
         }
 
-        #region Henkilöt
-        // Henkilöt
+        #region Projektit
+        // Projektit
         public JsonResult GetList()
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
 
-            var model = (from c in entities.Henkilot
+            var model = (from c in entities.Projektit
                          select new
                          {
-                             HenkiloID = c.HenkiloID,
-                             Etunimi = c.Etunimi,
-                             Sukunimi = c.Sukunimi,
+                             ProjektiID = c.ProjektiID,
+                             ProjektiNimi = c.ProjektiNimi,
                              Esimies = c.Esimies,
-                             Osoite = c.Osoite,
-                             Postinumero = c.Postinumero
+                             Avattu = c.Avattu,
+                             Suljettu = c.Suljettu,
+                             Status = c.Status
                          }).ToList();
 
             string json = JsonConvert.SerializeObject(model);
@@ -42,19 +42,19 @@ namespace Ohjelmoinnin_jatko.Controllers
             return Json(json, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetSingleHenkilo(int id)
+        public JsonResult GetSingleProjekti(int id)
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
-            var model = (from c in entities.Henkilot
-                         where c.HenkiloID == id
+            var model = (from c in entities.Projektit
+                         where c.ProjektiID == id
                          select new
                          {
-                             HenkiloID = c.HenkiloID,
-                             Etunimi = c.Etunimi,
-                             Sukunimi = c.Sukunimi,
+                             ProjektiID = c.ProjektiID,
+                             ProjektiNimi = c.ProjektiNimi,
                              Esimies = c.Esimies,
-                             Osoite = c.Osoite,
-                             Postinumero = c.Postinumero
+                             Avattu = c.Avattu,
+                             Suljettu = c.Suljettu,
+                             Status = c.Status
                          }).FirstOrDefault();
 
             string json = JsonConvert.SerializeObject(model);
@@ -63,10 +63,10 @@ namespace Ohjelmoinnin_jatko.Controllers
             return Json(json, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Update(Henkilot henk)
+        public ActionResult Update(Projektit proj)
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
-            int id = henk.HenkiloID;
+            int id = proj.ProjektiID;
 
             bool OK = false;
 
@@ -74,34 +74,34 @@ namespace Ohjelmoinnin_jatko.Controllers
             if (id == 0)
             {
                 // kyseessä on uuden asiakkaan lisääminen, kopioidaan kentät
-                Henkilot dbItem = new Henkilot()
+                Projektit dbItem = new Projektit()
                 {
-                    HenkiloID = henk.HenkiloID,
-                    Etunimi = henk.Etunimi,
-                    Sukunimi = henk.Sukunimi,
-                    Esimies = henk.Esimies,
-                    Osoite = henk.Osoite,
-                    Postinumero = henk.Postinumero
+                    ProjektiID = proj.ProjektiID,
+                    ProjektiNimi = proj.ProjektiNimi,
+                    Esimies = proj.Esimies,
+                    Avattu = proj.Avattu,
+                    Suljettu = proj.Suljettu,
+                    Status = proj.Status
                 };
 
                 // tallennus tietokantaan
-                entities.Henkilot.Add(dbItem);
+                entities.Projektit.Add(dbItem);
                 entities.SaveChanges();
                 OK = true;
             }
             else
             {
                 // muokkaus, haetaan id:n perusteella riviä tietokannasta
-                Henkilot dbItem = (from c in entities.Henkilot
-                                   where c.HenkiloID == id
-                                   select c).FirstOrDefault();
+                Projektit dbItem = (from c in entities.Projektit
+                                    where c.ProjektiID == id
+                                    select c).FirstOrDefault();
                 if (dbItem != null)
                 {
-                    dbItem.Etunimi = henk.Etunimi;
-                    dbItem.Sukunimi = henk.Sukunimi;
-                    dbItem.Esimies = henk.Esimies;
-                    dbItem.Osoite = henk.Osoite;
-                    dbItem.Postinumero = henk.Postinumero;
+                    dbItem.ProjektiNimi = proj.ProjektiNimi;
+                    dbItem.Esimies = proj.Esimies;
+                    dbItem.Avattu = proj.Avattu;
+                    dbItem.Suljettu = proj.Suljettu;
+                    dbItem.Status = proj.Status;
 
                     // tallennus tietokantaan
                     entities.SaveChanges();
@@ -119,13 +119,13 @@ namespace Ohjelmoinnin_jatko.Controllers
 
             //etsitään id:n perusteella asiakasrivi kannasta
             bool OK = false;
-            Henkilot dbItem = (from c in entities.Henkilot
-                               where c.HenkiloID == id
-                               select c).FirstOrDefault();
+            Projektit dbItem = (from c in entities.Projektit
+                                where c.ProjektiID == id
+                                select c).FirstOrDefault();
             if (dbItem != null)
             {
                 // tietokannasta poisto
-                entities.Henkilot.Remove(dbItem);
+                entities.Projektit.Remove(dbItem);
                 entities.SaveChanges();
                 OK = true;
             }

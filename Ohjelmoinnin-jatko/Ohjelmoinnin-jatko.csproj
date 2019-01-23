@@ -136,6 +136,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Taulukko2Controller.cs" />
+    <Compile Include="Controllers\Taulukko3Controller.cs" />
     <Compile Include="Controllers\TaulukkoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -226,6 +227,7 @@
     <Content Include="Views\Customer\Index2.cshtml" />
     <Content Include="Views\Taulukko2\Projektit.cshtml" />
     <Content Include="Views\Taulukko\Henkilöt.cshtml" />
+    <Content Include="Views\Taulukko3\Tunnit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
