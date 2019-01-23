@@ -16,21 +16,23 @@ namespace Ohjelmoinnin_jatko.Controllers
             return View();
         }
 
-        #region Projektit
-        // Projektit
+        #region Tunnit
+        // Tunnit
         public JsonResult GetList()
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
 
-            var model = (from c in entities.Projektit
+            var model = (from c in entities.Tunnit
                          select new
                          {
+                             TuntiID = c.TuntiID,
                              ProjektiID = c.ProjektiID,
-                             ProjektiNimi = c.ProjektiNimi,
-                             Esimies = c.Esimies,
-                             Avattu = c.Avattu,
-                             Suljettu = c.Suljettu,
-                             Status = c.Status
+                             HenkiloID = c.HenkiloID,
+                             Pvm = c.Pvm,
+                             ProjektiTunti = c.ProjektiTunti,
+                             ProjektiTunnit = c.ProjektiTunnit,
+                             SuunnitellutTunnit = c.SuunnitellutTunnit,
+                             ToteutuneetTunnit = c.ToteutuneetTunnit
                          }).ToList();
 
             string json = JsonConvert.SerializeObject(model);
@@ -42,19 +44,21 @@ namespace Ohjelmoinnin_jatko.Controllers
             return Json(json, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetSingleProjekti(int id)
+        public JsonResult GetSingleTunti(int id)
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
-            var model = (from c in entities.Projektit
-                         where c.ProjektiID == id
+            var model = (from c in entities.Tunnit
+                         where c.TuntiID == id
                          select new
                          {
+                             TuntiID = c.TuntiID,
                              ProjektiID = c.ProjektiID,
-                             ProjektiNimi = c.ProjektiNimi,
-                             Esimies = c.Esimies,
-                             Avattu = c.Avattu,
-                             Suljettu = c.Suljettu,
-                             Status = c.Status
+                             HenkiloID = c.HenkiloID,
+                             Pvm = c.Pvm,
+                             ProjektiTunti = c.ProjektiTunti,
+                             ProjektiTunnit = c.ProjektiTunnit,
+                             SuunnitellutTunnit = c.SuunnitellutTunnit,
+                             ToteutuneetTunnit = c.ToteutuneetTunnit
                          }).FirstOrDefault();
 
             string json = JsonConvert.SerializeObject(model);
@@ -63,10 +67,10 @@ namespace Ohjelmoinnin_jatko.Controllers
             return Json(json, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Update(Projektit proj)
+        public ActionResult Update(Tunnit tunn)
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
-            int id = proj.ProjektiID;
+            int id = tunn.TuntiID;
 
             bool OK = false;
 
@@ -74,34 +78,39 @@ namespace Ohjelmoinnin_jatko.Controllers
             if (id == 0)
             {
                 // kyseessä on uuden asiakkaan lisääminen, kopioidaan kentät
-                Projektit dbItem = new Projektit()
+                Tunnit dbItem = new Tunnit()
                 {
-                    ProjektiID = proj.ProjektiID,
-                    ProjektiNimi = proj.ProjektiNimi,
-                    Esimies = proj.Esimies,
-                    Avattu = proj.Avattu,
-                    Suljettu = proj.Suljettu,
-                    Status = proj.Status
+                    TuntiID = tunn.TuntiID,
+                    ProjektiID = tunn.ProjektiID,
+                    HenkiloID = tunn.HenkiloID,
+                    Pvm = tunn.Pvm,
+                    ProjektiTunti = tunn.ProjektiTunti,
+                    ProjektiTunnit = tunn.ProjektiTunnit,
+                    SuunnitellutTunnit = tunn.SuunnitellutTunnit,
+                    ToteutuneetTunnit = tunn.ToteutuneetTunnit
                 };
 
                 // tallennus tietokantaan
-                entities.Projektit.Add(dbItem);
+                entities.Tunnit.Add(dbItem);
                 entities.SaveChanges();
                 OK = true;
             }
             else
             {
                 // muokkaus, haetaan id:n perusteella riviä tietokannasta
-                Projektit dbItem = (from c in entities.Projektit
-                                    where c.ProjektiID == id
+                Tunnit dbItem = (from c in entities.Tunnit
+                                    where c.TuntiID == id
                                     select c).FirstOrDefault();
                 if (dbItem != null)
                 {
-                    dbItem.ProjektiNimi = proj.ProjektiNimi;
-                    dbItem.Esimies = proj.Esimies;
-                    dbItem.Avattu = proj.Avattu;
-                    dbItem.Suljettu = proj.Suljettu;
-                    dbItem.Status = proj.Status;
+                    dbItem.TuntiID = tunn.TuntiID;
+                    dbItem.ProjektiID = tunn.ProjektiID;
+                    dbItem.HenkiloID = tunn.HenkiloID;
+                    dbItem.Pvm = tunn.Pvm;
+                    dbItem.ProjektiTunti = tunn.ProjektiTunti;
+                    dbItem.ProjektiTunnit = tunn.ProjektiTunnit;
+                    dbItem.SuunnitellutTunnit = tunn.SuunnitellutTunnit;
+                    dbItem.ToteutuneetTunnit = tunn.ToteutuneetTunnit;
 
                     // tallennus tietokantaan
                     entities.SaveChanges();
@@ -119,13 +128,13 @@ namespace Ohjelmoinnin_jatko.Controllers
 
             //etsitään id:n perusteella asiakasrivi kannasta
             bool OK = false;
-            Projektit dbItem = (from c in entities.Projektit
-                                where c.ProjektiID == id
+            Tunnit dbItem = (from c in entities.Tunnit
+                                where c.TuntiID == id
                                 select c).FirstOrDefault();
             if (dbItem != null)
             {
                 // tietokannasta poisto
-                entities.Projektit.Remove(dbItem);
+                entities.Tunnit.Remove(dbItem);
                 entities.SaveChanges();
                 OK = true;
             }
