@@ -10,7 +10,7 @@ namespace Ohjelmoinnin_jatko.Controllers
 {
     public class Taulukko3Controller : Controller
     {
-        // GET: Taulukko2
+        // GET: Taulukko3
         public ActionResult Tunnit()
         {
             return View();
@@ -22,17 +22,17 @@ namespace Ohjelmoinnin_jatko.Controllers
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
 
-            var model = (from c in entities.Tunnit
+            var model = (from t in entities.Tunnit
                          select new
                          {
-                             TuntiID = c.TuntiID,
-                             ProjektiID = c.ProjektiID,
-                             HenkiloID = c.HenkiloID,
-                             Pvm = c.Pvm,
-                             ProjektiTunti = c.ProjektiTunti,
-                             ProjektiTunnit = c.ProjektiTunnit,
-                             SuunnitellutTunnit = c.SuunnitellutTunnit,
-                             ToteutuneetTunnit = c.ToteutuneetTunnit
+                             TuntiID = t.TuntiID,
+                             ProjektiID = t.ProjektiID,
+                             HenkiloID = t.HenkiloID,
+                             Pvm = t.Pvm,
+                             ProjektiTunti = t.ProjektiTunti,
+                             ProjektiTunnit = t.ProjektiTunnit,
+                             SuunnitellutTunnit = t.SuunnitellutTunnit,
+                             ToteutuneetTunnit = t.ToteutuneetTunnit
                          }).ToList();
 
             string json = JsonConvert.SerializeObject(model);
@@ -47,18 +47,18 @@ namespace Ohjelmoinnin_jatko.Controllers
         public JsonResult GetSingleTunti(int id)
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
-            var model = (from c in entities.Tunnit
-                         where c.TuntiID == id
+            var model = (from t in entities.Tunnit
+                         where t.TuntiID == id
                          select new
                          {
-                             TuntiID = c.TuntiID,
-                             ProjektiID = c.ProjektiID,
-                             HenkiloID = c.HenkiloID,
-                             Pvm = c.Pvm,
-                             ProjektiTunti = c.ProjektiTunti,
-                             ProjektiTunnit = c.ProjektiTunnit,
-                             SuunnitellutTunnit = c.SuunnitellutTunnit,
-                             ToteutuneetTunnit = c.ToteutuneetTunnit
+                             TuntiID = t.TuntiID,
+                             ProjektiID = t.ProjektiID,
+                             HenkiloID = t.HenkiloID,
+                             Pvm = t.Pvm,
+                             ProjektiTunti = t.ProjektiTunti,
+                             ProjektiTunnit = t.ProjektiTunnit,
+                             SuunnitellutTunnit = t.SuunnitellutTunnit,
+                             ToteutuneetTunnit = t.ToteutuneetTunnit
                          }).FirstOrDefault();
 
             string json = JsonConvert.SerializeObject(model);
@@ -77,7 +77,7 @@ namespace Ohjelmoinnin_jatko.Controllers
             // onko kyseessä muokkaus vai uuden lisääminen?
             if (id == 0)
             {
-                // kyseessä on uuden asiakkaan lisääminen, kopioidaan kentät
+                // kyseessä on uusien tuntien lisääminen, kopioidaan kentät
                 Tunnit dbItem = new Tunnit()
                 {
                     TuntiID = tunn.TuntiID,
@@ -98,9 +98,9 @@ namespace Ohjelmoinnin_jatko.Controllers
             else
             {
                 // muokkaus, haetaan id:n perusteella riviä tietokannasta
-                Tunnit dbItem = (from c in entities.Tunnit
-                                    where c.TuntiID == id
-                                    select c).FirstOrDefault();
+                Tunnit dbItem = (from t in entities.Tunnit
+                                    where t.TuntiID == id
+                                    select t).FirstOrDefault();
                 if (dbItem != null)
                 {
                     dbItem.TuntiID = tunn.TuntiID;
@@ -126,11 +126,11 @@ namespace Ohjelmoinnin_jatko.Controllers
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
 
-            //etsitään id:n perusteella asiakasrivi kannasta
+            //etsitään id:n perusteella tuntirivi kannasta
             bool OK = false;
-            Tunnit dbItem = (from c in entities.Tunnit
-                                where c.TuntiID == id
-                                select c).FirstOrDefault();
+            Tunnit dbItem = (from t in entities.Tunnit
+                                where t.TuntiID == id
+                                select t).FirstOrDefault();
             if (dbItem != null)
             {
                 // tietokannasta poisto

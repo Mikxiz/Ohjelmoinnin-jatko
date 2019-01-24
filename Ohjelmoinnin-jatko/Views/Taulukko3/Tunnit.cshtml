@@ -5,58 +5,58 @@
 
 	<script type="text/javascript">
 
-		function päivitäAsiakaslistaus() {
+		function päivitäTuntilistaus() {
 			$.getJSON("/taulukko3/getlist", null, function (json) {
 				var tunti = JSON.parse(json);
 				//alert("Asiakkaiden lkm: " + tunti.lenght);
 
 				var html = "";
-				for (var index = 0; index < tunti.length; index++) {
+				for (var Tunnit = 0; Tunnit < tunti.length; Tunnit++) {
 					html += "<tr>" +
 						"<td><a href='#'><span class='glyphicon glyphicon-pencil'></span></a></td>" +
-						"<td>" + tunti[index].TuntiID + "</td>" +
-						"<td>" + tunti[index].ProjektiID + "</td>" +
-						"<td>" + tunti[index].HenkiloID + "</td>" +
-						"<td>" + tunti[index].Pvm + "</td>" +
-						"<td>" + tunti[index].ProjektiTunti + "</td>" +
-						"<td>" + tunti[index].ProjektiTunnit + "</td>" +
-						"<td>" + tunti[index].SuunnitellutTunnit + "</td>" +
-						"<td>" + tunti[index].ToteutuneetTunnit + "</td>" +
+						"<td>" + tunti[Tunnit].TuntiID + "</td>" +
+						"<td>" + tunti[Tunnit].ProjektiID + "</td>" +
+						"<td>" + tunti[Tunnit].HenkiloID + "</td>" +
+						"<td>" + tunti[Tunnit].Pvm + "</td>" +
+						"<td>" + tunti[Tunnit].ProjektiTunti + "</td>" +
+						"<td>" + tunti[Tunnit].ProjektiTunnit + "</td>" +
+						"<td>" + tunti[Tunnit].SuunnitellutTunnit + "</td>" +
+						"<td>" + tunti[Tunnit].ToteutuneetTunnit + "</td>" +
 						"<td><a href='#'><span class='glyphicon glyphicon-trash'></span></a></td>" +
 						"</tr>\r\n";
 				}
 
-				$("#customerList tbody").html(html);
+				$("#tuntiList tbody").html(html);
 
 				//tietojen muokkaus
 				$(".glyphicon-pencil").click(function () {
-					// etsitään asiakkaan tiedot klikatulta riviltä
+					// etsitään tuntien tiedot klikatulta riviltä
 					var TuntiID = $(this).parent().parent().next().text();
 					//alert(TuntiID);
 
-					//haetaan asiakkaan tiedot id:n perusteella
+					//haetaan tuntien tiedot id:n perusteella
 					$.getJSON("/taulukko3/getsingletunti/" + TuntiID, null, function (json2) {
 						var tunti = JSON.parse(json2);
 
 						// kopiodaan tiedot ikkunaan
-						$("#customerModal_TuntiID").val(tunti.TuntiID);
-						$("#customerModal_ProjektiID").val(tunti.ProjektiID);
-						$("#customerModal_HenkiloID").val(tunti.HenkiloID);
-						$("#customerModal_Pvm").val(tunti.Pvm);
-						$("#customerModal_ProjektiTunti").val(tunti.ProjektiTunti);
-						$("#customerModal_ProjektiTunnit").val(tunti.ProjektiTunnit);
-						$("#customerModal_SuunnitellutTunnit").val(tunti.SuunnitellutTunnit);
-						$("#customerModal_ToteutuneetTunnit").val(tunti.ToteutuneetTunnit);
+						$("#tuntiModal_TuntiID").val(tunti.TuntiID);
+						$("#tuntiModal_ProjektiID").val(tunti.ProjektiID);
+						$("#tuntiModal_HenkiloID").val(tunti.HenkiloID);
+						$("#tuntiModal_Pvm").val(tunti.Pvm);
+						$("#tuntiModal_ProjektiTunti").val(tunti.ProjektiTunti);
+						$("#tuntiModal_ProjektiTunnit").val(tunti.ProjektiTunnit);
+						$("#tuntiModal_SuunnitellutTunnit").val(tunti.SuunnitellutTunnit);
+						$("#tuntiModal_ToteutuneetTunnit").val(tunti.ToteutuneetTunnit);
 
 						// näytetään ikkuna
-						$("#customerModalTitle").text("Muokkaa tunteja");
-						$("#customerModalDialog").modal("show");
+						$("#tuntiModalTitle").text("Muokkaa tunteja");
+						$("#tuntiModalDialog").modal("show");
 					});
 				});
 
 				// tietojen poisto
 				$(".glyphicon-trash").click(function () {
-					// etsitään asiakkaan tiedot klikatulta riviltä
+					// etsitään tuntien tiedot klikatulta riviltä
 					var TuntiID = $(this).parent().parent().prev().prev().prev().prev().prev().prev().prev().prev().text();
 					var ok = confirm("Haluatko varmasti poistaa tuntien " + TuntiID + " tiedot?");
 
@@ -64,10 +64,10 @@
 						$.getJSON("/taulukko3/delete/" + TuntiID, null, function (status) {
 							if (status == true) {
 								alert("Tuntien tiedot on nyt poistettu!");
-								päivitäAsiakaslistaus();
+								päivitäTuntilistaus();
 							}
 							else {
-								alert("Poistaminen ei onnistunut, yritä uudelleen!");
+								alert("Tuntien poistaminen ei onnistunut, yritä uudelleen!");
 							}
 						});
 					}
@@ -77,45 +77,45 @@
 
 		// sivun alustaminen
 		$(function () {
-			päivitäAsiakaslistaus();
+			päivitäTuntilistaus();
 
-			$("#addNewCustomerButton").click(function () {
+			$("#addNewTuntiButton").click(function () {
 
 				// tyhjennetään ikkunan tiedot
-				$("#customerModal_TuntiID").val(0);
-				$("#customerModal_ProjektiID").val("");
-				$("#customerModal_HenkiloID").val("");
-				$("#customerModal_Pvm").val("");
-				$("#customerModal_ProjektiTunti").val("");
-				$("#customerModal_ProjektiTunnit").val("");
-				$("#customerModal_SuunnitellutTunnit").val("");
-				$("#customerModal_ToteutuneetTunnit").val("");
+				$("#tuntiModal_TuntiID").val(0);
+				$("#tuntiModal_ProjektiID").val("");
+				$("#tuntiModal_HenkiloID").val("");
+				$("#tuntiModal_Pvm").val("");
+				$("#tuntiModal_ProjektiTunti").val("");
+				$("#tuntiModal_ProjektiTunnit").val("");
+				$("#tuntiModal_SuunnitellutTunnit").val("");
+				$("#tuntiModal_ToteutuneetTunnit").val("");
 
-				$("#customerModalTitle").text("Lisää uusia tunteja");
-				$("#customerModalDialog").modal("show");
+				$("#tuntiModalTitle").text("Lisää uusia tunteja");
+				$("#tuntiModalDialog").modal("show");
 			});
 
-			$("#customerModalSaveButton").click(function () {
+			$("#tuntiModalSaveButton").click(function () {
 				// luetaan käyttäjän syöttämät kentät
 				var details = {
-					TuntiID: $("#customerModal_TuntiID").val(),
-					ProjektiID: $("#customerModal_ProjektiID").val(),
-					HenkiloID: $("#customerModal_HenkiloID").val(),
-					Pvm: $("#customerModal_Pvm").val(),
-					ProjektiTunti: $("#customerModal_ProjektiTunti").val(),
-					ProjektiTunnit: $("#customerModal_ProjektiTunnit").val(),
-					SuunnitellutTunnit: $("#customerModal_SuunnitellutTunnit").val(),
-					ToteutuneetTunnit: $("#customerModal_ToteutuneetTunnit").val()
+					TuntiID: $("#tuntiModal_TuntiID").val(),
+					ProjektiID: $("#tuntiModal_ProjektiID").val(),
+					HenkiloID: $("#tuntiModal_HenkiloID").val(),
+					Pvm: $("#tuntiModal_Pvm").val(),
+					ProjektiTunti: $("#tuntiModal_ProjektiTunti").val(),
+					ProjektiTunnit: $("#tuntiModal_ProjektiTunnit").val(),
+					SuunnitellutTunnit: $("#tuntiModal_SuunnitellutTunnit").val(),
+					ToteutuneetTunnit: $("#tuntiModal_ToteutuneetTunnit").val()
 				};
 
 				$.post("/taulukko3/update/", details, function (status) {
 					if (status == true) {
 						alert("Tuntien tiedot tallennettu!");
-						$("#customerModalDialog").modal("hide");
-						päivitäAsiakaslistaus();
+						$("#tuntiModalDialog").modal("hide");
+						päivitäTuntilistaus();
 					}
 					else {
-						alert("Tallennus ei onnistunut, yritä uudelleen!");
+						alert("Tuntien tallennus ei onnistunut, yritä uudelleen!");
 					}
 				});
 			});
@@ -123,70 +123,71 @@
 	</script>
 
 }
-<h1>Tunnit sivu</h1>
-<button class="btn btn-primary" id="addNewCustomerButton">Lisää uusia tunteja</button>
 
-<table class="table table-striped" id="customerList">
+<h1>Tunnit sivu</h1>
+<button class="btn btn-primary" id="addNewTuntiButton">Lisää uusia tunteja</button>
+
+<table class="table table-striped" id="tuntiList">
 	<thead>
 		<tr>
 			<th></th>
 			<th>Tunti-id</th>
 			<th>Projekti-id</th>
 			<th>Henkilö-id</th>
-			<th>Pvm</th>
-			<th>ProjektiTunti</th>
-			<th>ProjektiTunnit</th>
-			<th>SuunnitellutTunnit</th>
-			<th>ToteutuneetTunnit</th>
+			<th>Päivämäärä</th>
+			<th>Projekti tunti</th>
+			<th>Projektin tunnit</th>
+			<th>Suunnitellut tunnit</th>
+			<th>Toteutuneet tunnit</th>
 		</tr>
 	</thead>
 	<tbody></tbody>
 </table>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="customerModalDialog">
+<div class="modal fade" tabindex="-1" role="dialog" id="tuntiModalDialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title"><span id="customerModalTitle">Muokkaa tunteja</span></h4>
+				<h2 class="modal-title"><span id="tuntiModalTitle">Muokkaa tunteja</span></h2>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-md-3">Tunti-id</div>
-					<div class="col-md-6"><input class="form-control" id="customerModal_TuntiID" type="text" readonly></div>
+					<div class="col-md-6"><input class="form-control" id="tuntiModal_TuntiID" type="text" readonly></div>
 				</div>
 				<div class="row">
 					<div class="col-md-3">Projekti-id</div>
-					<div class="col-md-6"><input class="form-control" id="customerModal_ProjektiID" type="text"></div>
+					<div class="col-md-6"><input class="form-control" id="tuntiModal_ProjektiID" type="text"></div>
 				</div>
 				<div class="row">
 					<div class="col-md-3">Henkilö-id</div>
-					<div class="col-md-6"><input class="form-control" id="customerModal_HenkiloID" type="text"></div>
+					<div class="col-md-6"><input class="form-control" id="tuntiModal_HenkiloID" type="text"></div>
 				</div>
 				<div class="row">
-					<div class="col-md-3">Pvm</div>
-					<div class="col-md-6"><input class="form-control" id="customerModal_Pvm" type="text"></div>
+					<div class="col-md-3">Päivämäärä</div>
+					<div class="col-md-6"><input class="form-control" id="tuntiModal_Pvm" type="text"></div>
 				</div>
 				<div class="row">
-					<div class="col-md-3">ProjektiTunti</div>
-					<div class="col-md-6"><input class="form-control" id="customerModal_ProjektiTunti" type="text"></div>
+					<div class="col-md-3">Projekti tunti</div>
+					<div class="col-md-6"><input class="form-control" id="tuntiModal_ProjektiTunti" type="text"></div>
 				</div>
 				<div class="row">
-					<div class="col-md-3">ProjektiTunnit</div>
-					<div class="col-md-6"><input class="form-control" id="customerModal_ProjektiTunnit" type="text"></div>
+					<div class="col-md-3">Projektin tunnit</div>
+					<div class="col-md-6"><input class="form-control" id="tuntiModal_ProjektiTunnit" type="text"></div>
 				</div>
 				<div class="row">
-					<div class="col-md-3">SuunnitellutTunnit</div>
-					<div class="col-md-6"><input class="form-control" id="customerModal_SuunnitellutTunnit" type="text"></div>
+					<div class="col-md-3">Suunnitellut tunnit</div>
+					<div class="col-md-6"><input class="form-control" id="tuntiModal_SuunnitellutTunnit" type="text"></div>
 				</div>
 				<div class="row">
-					<div class="col-md-3">ToteutuneedTunnit</div>
-					<div class="col-md-6"><input class="form-control" id="customerModal_ToteutuneetTunnit" type="text"></div>
+					<div class="col-md-3">Toteutuneet tunnit</div>
+					<div class="col-md-6"><input class="form-control" id="tuntiModal_ToteutuneetTunnit" type="text"></div>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Sulje</button>
-				<button type="button" class="btn btn-primary" id="customerModalSaveButton">Tallenna</button>
+				<button type="button" class="btn btn-primary" id="tuntiModalSaveButton">Tallenna</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
