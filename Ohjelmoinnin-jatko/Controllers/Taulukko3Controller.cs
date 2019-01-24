@@ -17,7 +17,7 @@ namespace Ohjelmoinnin_jatko.Controllers
         }
 
         #region Tunnit
-        // Tunnit
+        // Tunnit region
         public JsonResult GetList()
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();

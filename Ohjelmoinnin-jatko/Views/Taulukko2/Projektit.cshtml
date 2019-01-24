@@ -54,12 +54,12 @@
 				$(".glyphicon-trash").click(function () {
 					// etsitään asiakkaan tiedot klikatulta riviltä
 					var ProjektiID = $(this).parent().parent().prev().prev().prev().prev().prev().prev().text();
-					var ok = confirm("Haluatko varmasti poistaa projektin " + ProjektiID + "?");
+					var ok = confirm("Haluatko varmasti poistaa projektin " + ProjektiID + " tiedot?");
 
 					if (ok == true) {
 						$.getJSON("/taulukko2/delete/" + ProjektiID, null, function (status) {
 							if (status == true) {
-								alert("Projekti on nyt poistettu!");
+								alert("Projektin tiedot on nyt poistettu!");
 								päivitäAsiakaslistaus();
 							}
 							else {

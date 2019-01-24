@@ -17,20 +17,20 @@ namespace Ohjelmoinnin_jatko.Controllers
         }
 
         #region Henkilöt
-        // Henkilöt
+        // Henkilöt region
         public JsonResult GetList()
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
 
-            var model = (from c in entities.Henkilot
+            var model = (from h in entities.Henkilot
                          select new
                          {
-                             HenkiloID = c.HenkiloID,
-                             Etunimi = c.Etunimi,
-                             Sukunimi = c.Sukunimi,
-                             Esimies = c.Esimies,
-                             Osoite = c.Osoite,
-                             Postinumero = c.Postinumero
+                             HenkiloID = h.HenkiloID,
+                             Etunimi = h.Etunimi,
+                             Sukunimi = h.Sukunimi,
+                             Esimies = h.Esimies,
+                             Osoite = h.Osoite,
+                             Postinumero = h.Postinumero
                          }).ToList();
 
             string json = JsonConvert.SerializeObject(model);
@@ -45,16 +45,16 @@ namespace Ohjelmoinnin_jatko.Controllers
         public JsonResult GetSingleHenkilo(int id)
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
-            var model = (from c in entities.Henkilot
-                         where c.HenkiloID == id
+            var model = (from h in entities.Henkilot
+                         where h.HenkiloID == id
                          select new
                          {
-                             HenkiloID = c.HenkiloID,
-                             Etunimi = c.Etunimi,
-                             Sukunimi = c.Sukunimi,
-                             Esimies = c.Esimies,
-                             Osoite = c.Osoite,
-                             Postinumero = c.Postinumero
+                             HenkiloID = h.HenkiloID,
+                             Etunimi = h.Etunimi,
+                             Sukunimi = h.Sukunimi,
+                             Esimies = h.Esimies,
+                             Osoite = h.Osoite,
+                             Postinumero = h.Postinumero
                          }).FirstOrDefault();
 
             string json = JsonConvert.SerializeObject(model);
@@ -73,7 +73,7 @@ namespace Ohjelmoinnin_jatko.Controllers
             // onko kyseessä muokkaus vai uuden lisääminen?
             if (id == 0)
             {
-                // kyseessä on uuden asiakkaan lisääminen, kopioidaan kentät
+                // kyseessä on uuden henkilön lisääminen, kopioidaan kentät
                 Henkilot dbItem = new Henkilot()
                 {
                     HenkiloID = henk.HenkiloID,
@@ -92,9 +92,9 @@ namespace Ohjelmoinnin_jatko.Controllers
             else
             {
                 // muokkaus, haetaan id:n perusteella riviä tietokannasta
-                Henkilot dbItem = (from c in entities.Henkilot
-                                   where c.HenkiloID == id
-                                   select c).FirstOrDefault();
+                Henkilot dbItem = (from h in entities.Henkilot
+                                   where h.HenkiloID == id
+                                   select h).FirstOrDefault();
                 if (dbItem != null)
                 {
                     dbItem.Etunimi = henk.Etunimi;
@@ -117,11 +117,11 @@ namespace Ohjelmoinnin_jatko.Controllers
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
 
-            //etsitään id:n perusteella asiakasrivi kannasta
+            //etsitään id:n perusteella henkilörivi kannasta
             bool OK = false;
-            Henkilot dbItem = (from c in entities.Henkilot
-                               where c.HenkiloID == id
-                               select c).FirstOrDefault();
+            Henkilot dbItem = (from h in entities.Henkilot
+                               where h.HenkiloID == id
+                               select h).FirstOrDefault();
             if (dbItem != null)
             {
                 // tietokannasta poisto

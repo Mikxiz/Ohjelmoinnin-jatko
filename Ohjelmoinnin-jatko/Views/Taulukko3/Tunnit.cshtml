@@ -58,12 +58,12 @@
 				$(".glyphicon-trash").click(function () {
 					// etsitään asiakkaan tiedot klikatulta riviltä
 					var TuntiID = $(this).parent().parent().prev().prev().prev().prev().prev().prev().prev().prev().text();
-					var ok = confirm("Haluatko varmasti poistaa tunnit " + TuntiID + "?");
+					var ok = confirm("Haluatko varmasti poistaa tuntien " + TuntiID + " tiedot?");
 
 					if (ok == true) {
 						$.getJSON("/taulukko3/delete/" + TuntiID, null, function (status) {
 							if (status == true) {
-								alert("Tunnit on nyt poistettu!");
+								alert("Tuntien tiedot on nyt poistettu!");
 								päivitäAsiakaslistaus();
 							}
 							else {

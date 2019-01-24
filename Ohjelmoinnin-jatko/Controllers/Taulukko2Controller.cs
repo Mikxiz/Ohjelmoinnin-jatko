@@ -17,7 +17,7 @@ namespace Ohjelmoinnin_jatko.Controllers
         }
 
         #region Projektit
-        // Projektit
+        // Projektit region
         public JsonResult GetList()
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
