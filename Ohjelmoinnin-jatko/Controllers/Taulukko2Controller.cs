@@ -22,15 +22,15 @@ namespace Ohjelmoinnin_jatko.Controllers
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
 
-            var model = (from c in entities.Projektit
+            var model = (from p in entities.Projektit
                          select new
                          {
-                             ProjektiID = c.ProjektiID,
-                             ProjektiNimi = c.ProjektiNimi,
-                             Esimies = c.Esimies,
-                             Avattu = c.Avattu,
-                             Suljettu = c.Suljettu,
-                             Status = c.Status
+                             ProjektiID = p.ProjektiID,
+                             ProjektiNimi = p.ProjektiNimi,
+                             Esimies = p.Esimies,
+                             Avattu = p.Avattu,
+                             Suljettu = p.Suljettu,
+                             Status = p.Status
                          }).ToList();
 
             string json = JsonConvert.SerializeObject(model);
@@ -45,16 +45,16 @@ namespace Ohjelmoinnin_jatko.Controllers
         public JsonResult GetSingleProjekti(int id)
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
-            var model = (from c in entities.Projektit
-                         where c.ProjektiID == id
+            var model = (from p in entities.Projektit
+                         where p.ProjektiID == id
                          select new
                          {
-                             ProjektiID = c.ProjektiID,
-                             ProjektiNimi = c.ProjektiNimi,
-                             Esimies = c.Esimies,
-                             Avattu = c.Avattu,
-                             Suljettu = c.Suljettu,
-                             Status = c.Status
+                             ProjektiID = p.ProjektiID,
+                             ProjektiNimi = p.ProjektiNimi,
+                             Esimies = p.Esimies,
+                             Avattu = p.Avattu,
+                             Suljettu = p.Suljettu,
+                             Status = p.Status
                          }).FirstOrDefault();
 
             string json = JsonConvert.SerializeObject(model);
@@ -73,7 +73,7 @@ namespace Ohjelmoinnin_jatko.Controllers
             // onko kyseessä muokkaus vai uuden lisääminen?
             if (id == 0)
             {
-                // kyseessä on uuden asiakkaan lisääminen, kopioidaan kentät
+                // kyseessä on uuden projektin lisääminen, kopioidaan kentät
                 Projektit dbItem = new Projektit()
                 {
                     ProjektiID = proj.ProjektiID,
@@ -92,9 +92,9 @@ namespace Ohjelmoinnin_jatko.Controllers
             else
             {
                 // muokkaus, haetaan id:n perusteella riviä tietokannasta
-                Projektit dbItem = (from c in entities.Projektit
-                                    where c.ProjektiID == id
-                                    select c).FirstOrDefault();
+                Projektit dbItem = (from p in entities.Projektit
+                                    where p.ProjektiID == id
+                                    select p).FirstOrDefault();
                 if (dbItem != null)
                 {
                     dbItem.ProjektiNimi = proj.ProjektiNimi;
@@ -117,11 +117,11 @@ namespace Ohjelmoinnin_jatko.Controllers
         {
             OhjelmoinninjatkoEntities entities = new OhjelmoinninjatkoEntities();
 
-            //etsitään id:n perusteella asiakasrivi kannasta
+            //etsitään id:n perusteella projektirivi kannasta
             bool OK = false;
-            Projektit dbItem = (from c in entities.Projektit
-                                where c.ProjektiID == id
-                                select c).FirstOrDefault();
+            Projektit dbItem = (from p in entities.Projektit
+                                where p.ProjektiID == id
+                                select p).FirstOrDefault();
             if (dbItem != null)
             {
                 // tietokannasta poisto

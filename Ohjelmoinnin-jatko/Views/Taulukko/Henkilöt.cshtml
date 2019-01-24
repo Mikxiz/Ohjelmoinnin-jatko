@@ -5,7 +5,7 @@
 
 	<script type="text/javascript">
 
-		function päivitäAsiakaslistaus() {
+		function päivitäHenkilölistaus() {
 			$.getJSON("/taulukko/getlist", null, function (json) {
 				var henkilot = JSON.parse(json);
 				//alert("Henkilöiden lkm: " + henkilot.lenght);
@@ -60,7 +60,7 @@
 						$.getJSON("/taulukko/delete/" + HenkiloID, null, function (status) {
 							if (status == true) {
 								alert("Henkilön tiedot on nyt poistettu!");
-								päivitäAsiakaslistaus();
+								päivitäHenkilölistaus();
 							}
 							else {
 								alert("Henkilön poistaminen ei onnistunut, yritä uudelleen!");
@@ -73,7 +73,7 @@
 
 		// sivun alustaminen
 		$(function () {
-			päivitäAsiakaslistaus();
+			päivitäHenkilölistaus();
 
 			$("#addNewHenkiloButton").click(function () {
 
@@ -104,7 +104,7 @@
 					if (status == true) {
 						alert("Henkilön tiedot tallennettu!");
 						$("#henkiloModalDialog").modal("hide");
-						päivitäAsiakaslistaus();
+						päivitäHenkilölistaus();
 					}
 					else {
 						alert("Henkilön tallennus ei onnistunut, yritä uudelleen!");
