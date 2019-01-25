@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c04642571a334dd882a126a7055d9ec3" Name="Diagram1">
+      <Diagram DiagramId="916eeda4c86d459faf249653c043a467" Name="Diagram1">
         <EntityTypeShape EntityType="OhjelmoinninjatkoModel.Henkilot" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="OhjelmoinninjatkoModel.Projektit" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="OhjelmoinninjatkoModel.Tunnit" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
